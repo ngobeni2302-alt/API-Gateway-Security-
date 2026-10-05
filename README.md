@@ -4,7 +4,7 @@ A lightweight, high-performance security proxy and middleware gateway built with
 
 ---
 
-## 🎥 Demo Video
+## Demo Video
 Watch the 5-minute project walkthrough and live demonstration: 
 
 ---
