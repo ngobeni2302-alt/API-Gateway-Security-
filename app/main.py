@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, HTTPException, status
 from app.middleware import verify_hmac_signature
 from app.schemas import WebhookPayload
+from fastapi import FastAPI, Request, Depends, HTTPException, status
 import httpx
 
 app = FastAPI(title="Cloud-Native Webhook & API Security Gateway", version="1.0.0")
