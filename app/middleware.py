@@ -1,7 +1,12 @@
 import hmac
 import hashlib
+import time
+from collections import defaultdict
 from fastapi import Request, HTTPException, status
 from app.config import settings
+
+# In-memory store tracking request timestamps per client IP: {ip: [timestamp, ...]}
+REQUEST_TRACKER = defaultdict(list)
 
 async def verify_hmac_signature(request: Request):
     """
@@ -36,4 +41,27 @@ async def verify_hmac_signature(request: Request):
             detail="Invalid cryptographic signature. Request rejected."
         )
     
+    return True
+
+async def rate_limit_middleware(request: Request):
+    """
+    Enforces a strict IP-based request rate limit window to block brute-force/DoS attacks.
+    """
+    client_ip = request.client.host
+    current_time = time.time()
+    
+    window_start = current_time - settings.RATE_LIMIT_WINDOW_SECONDS
+    
+    # Filter out timestamps older than the sliding window window
+    timestamps = REQUEST_TRACKER[client_ip]
+    valid_timestamps = [ts for ts in timestamps if ts > window_start]
+    
+    if len(valid_timestamps) >= settings.RATE_LIMIT_MAX_REQUESTS:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Rate limit exceeded. Too many requests from this IP."
+        )
+    
+    valid_timestamps.append(current_time)
+    REQUEST_TRACKER[client_ip] = valid_timestamps
     return True
