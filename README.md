@@ -52,6 +52,13 @@ cp .env.example .env
 Start the security gateway server using Uvicorn
 uvicorn app.main:app --reload --port 8000
 
+URLs to View the Interface in Your Browser
+Open your browser and navigate to one of these routes:
+
+Interactive Swagger UI Documentation (Best View)
+Plaintext
+http://127.0.0.1:8000/docs
+
 Running Tests
 
 Execute the test suite using pytest to verify security middleware functionality:
@@ -74,3 +81,15 @@ API-Gateway-Security-/
 ├── Dockerfile           # Multi-stage container deployment
 ├── requirements.txt     # Python dependencies
 └── README.md            # Project documentation
+
+
+5. Docker Containerization
+docker build -t api-security-gateway .
+
+Reads the local Dockerfile and builds an isolated container image tagged (-t) as api-security-gateway.
+
+docker run -p 8000:8000 api-security-gateway
+
+Spins up a running container instance from the built image:
+
+-p 8000:8000: Maps port 8000 on your host machine to port 8000 inside the container so you can access the running gateway server at [http://127.0.0.1:8000](http://127.0.0.1:8000).
