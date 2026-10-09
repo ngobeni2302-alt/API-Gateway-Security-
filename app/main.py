@@ -1,16 +1,18 @@
-from fastapi import FastAPI, Request, HTTPException, status
+from fastapi import FastAPI, Request, Depends, HTTPException, status
+from contextlib import asynccontextmanager
 from sqlalchemy.orm import Session
 from app.middleware import verify_hmac_signature, rate_limit_middleware
 from app.database import SessionLocal, init_db, AuditLog
 from app.schemas import WebhookPayload
-from fastapi import FastAPI, Request, Depends, HTTPException, status
-import httpx
 
-app = FastAPI(title="Cloud-Native Webhook & API Security Gateway", version="1.0.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Execute startup logic
+    init_db()
+    yield
+    # Shutdown logic (if needed)
 
-@app.on_event("startup")
-def startup_event():
-    init_db()  # Initialize the database and create tables if they don't exist
+app = FastAPI(title="Cloud-Native Webhook & API Security Gateway", version="1.0.0", lifespan=lifespan)
 
 def get_db():
     db = SessionLocal()
