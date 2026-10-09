@@ -32,13 +32,12 @@ Watch the 5-minute project walkthrough and live demonstration:
 
 1. Clone the Repository
 
-git clone [https://github.com/your-username/api-security-gateway.git](https://github.com/your-username/api-security-gateway.git)
-
-cd api-security-gateway
+git clone https://github.com/ngobeni2302-alt/API-Gateway-Security-.git
+   cd API-Gateway-Security-
 
 2. Create a Virtual Environment & Install Dependencies
 
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # On Windows use: venv\Scripts\activate
 pip install -r requirements.txt
 
@@ -49,10 +48,8 @@ Copy the example environment file and update your secret key:
 cp .env.example .env
 
 4. Run the Application
+
 Start the security gateway server using Uvicorn
-
-
-
 uvicorn app.main:app --reload --port 8000
 
 Running Tests
@@ -65,12 +62,15 @@ pytest -v
 ### Project Architecture
 
 
-api-security-gateway/
+API-Gateway-Security-/
 ├── app/
-│   ├── main.py          # Environment configuration
-│   ├── schemas.py       # Pydantic request models
-│   ├── middleware.py    # Security & auth logic
-│   └── database.py      # SQLite audit log models
+│   ├── main.py          # FastAPI application & route definitions
+│   ├── config.py        # Environment settings & secret management
+│   ├── schemas.py       # Pydantic models & sanitization logic
+│   ├── middleware.py    # HMAC verification & rate-limiting middleware
+│   └── database.py      # SQLAlchemy models & audit logging
 ├── tests/
-│   └── test_gateway.py  # Unit tests for security controls
-└── requirements.txt
+│   └── test_gateway.py  # Automated test suite
+├── Dockerfile           # Multi-stage container deployment
+├── requirements.txt     # Python dependencies
+└── README.md            # Project documentation
