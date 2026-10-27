@@ -93,3 +93,6 @@ docker run -p 8000:8000 api-security-gateway
 Spins up a running container instance from the built image:
 
 -p 8000:8000: Maps port 8000 on your host machine to port 8000 inside the container so you can access the running gateway server at [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+Verification code:
+WTC-PQUG2SDF
